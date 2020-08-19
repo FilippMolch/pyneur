@@ -1,13 +1,13 @@
 import pygame
-import numpy
 import sys
 import main
-#import neur
 import snak
 import random
+import data
 
 class Game(object):
         def __init__(self):
+            pygame.init()
             self.score = 0
             self.deth = 0
             self.deth_flag = True
@@ -20,7 +20,7 @@ class Game(object):
             self.ln = 0
             self.font = pygame.font.Font('font/mine.ttf', 14)
             self.text = self.font.render("генетический алгоритм", 0, self.black)
-            self.text_2 = self.font.render("метод обратного распространения ошибки", 0, self.black)
+            self.text_2 = self.font.render("свободный режим", 0, self.black)
             self.text_3 = self.font.render("счёт: {}".format(self.score), 0, self.black)
             self.text_4 = self.font.render("смерти: {}".format(self.deth), 0, self.black)
             self.text_5 = self.font.render("длина: {}".format(self.ln), 0, self.black)
@@ -29,6 +29,7 @@ class Game(object):
             self.text_8 = self.font.render("просто: F3".format(self.ln), 0, self.black)
             self.text_9 = self.font.render("норм: F4".format(self.ln), 0, self.black)
             self.text_10 = self.font.render("сложно: F5".format(self.ln), 0, self.black)
+            self.text_66 = self.font.render("debug: P".format(self.ln), 0, self.black)
             self.text_11 = self.font.render("пауза: Q".format(self.ln), 0, self.black)
             self.text_12 = self.font.render("режимы: F6".format(self.ln), 0, self.black)
             self.o = 149
@@ -45,9 +46,11 @@ class Game(object):
             self.play_index_2 = 0
             self.do_flag_dir = ""
             self.i_tebya_unichtoju = 1
-            self.mod = 1
+            self.mod = 0
             self.pause = False
             self.mod_index = 0
+            self.debug = 0
+            self.i = 0
 
         def game(self, flag):
             while self.flag:
@@ -57,16 +60,16 @@ class Game(object):
                         pygame.quit()
                         sys.exit()
                     if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_LEFT and self.anim.flag_dir != "RIGHT" and not self.pause:
+                        if event.key == pygame.K_LEFT and self.anim.flag_dir != "RIGHT" and not self.pause and not self.mod:
                             self.anim.flag_dir = "LEFT"
 
-                        if event.key == pygame.K_RIGHT and self.anim.flag_dir != "LEFT" and not self.pause:
+                        if event.key == pygame.K_RIGHT and self.anim.flag_dir != "LEFT" and not self.pause and not self.mod:
                             self.anim.flag_dir = "RIGHT"
 
-                        if event.key == pygame.K_UP and self.anim.flag_dir != "DOWN" and not self.pause:
+                        if event.key == pygame.K_UP and self.anim.flag_dir != "DOWN" and not self.pause and not self.mod:
                             self.anim.flag_dir = "UP"
 
-                        if event.key == pygame.K_DOWN and self.anim.flag_dir != "UP" and not self.pause:
+                        if event.key == pygame.K_DOWN and self.anim.flag_dir != "UP" and not self.pause and not self.mod:
                             self.anim.flag_dir = "DOWN"
 
                         if event.key == pygame.K_F1:
@@ -97,6 +100,13 @@ class Game(object):
 
                         elif event.key == pygame.K_F5:
                             self.speed = 0.030
+                        elif event.key == pygame.K_p:
+                            #self.speed = 0.5
+                            self.i += 1
+                            if self.i % 2 == 0:
+                                self.debug = 1
+                            else:
+                                self.debug = 0
 
                         elif event.key == pygame.K_q:
                             self.i_tebya_unichtoju += 1
@@ -114,6 +124,7 @@ class Game(object):
                                 self.mod = 1
                             else:
                                 self.mod = 0
+
 
                 if self.anim.head[0] <= 80 and self.deth_flag:
                     self.mus_2.play()
@@ -191,12 +202,70 @@ class Game(object):
                 self.disp.blit(self.text_10, (1, 219+20))
                 self.disp.blit(self.text_11, (1, 219+60))
                 self.disp.blit(self.text_12, (1, 219+100))
+                #points
+                if self.debug:
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]+30, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]+50, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]+70, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]+90, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]+110, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]+130, 2, 2))
 
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]-10, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]-30, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]-50, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]-70, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]-90, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]-110, 2, 2))
+
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+30, self.anim.snake[0][1]+10, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+50, self.anim.snake[0][1]+10, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+70, self.anim.snake[0][1]+10, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+90, self.anim.snake[0][1]+10, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+110, self.anim.snake[0][1]+10, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+130, self.anim.snake[0][1]+10, 2, 2))
+
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]-10, self.anim.snake[0][1]+10, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]-30, self.anim.snake[0][1]+10, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]-50, self.anim.snake[0][1]+10, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]-70, self.anim.snake[0][1]+10, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]-90, self.anim.snake[0][1]+10, 2, 2))
+                    pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]-110, self.anim.snake[0][1]+10, 2, 2))
+
+                try:
+                    dot_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+33))
+                    dot_2 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+53))
+                    dot_3 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+73))
+                    dot_4 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+93))
+                    dot_5 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+113))
+                    dot_6 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+133))
+
+                    dot_1_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-10))
+                    dot_2_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-30))
+                    dot_3_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-50))
+                    dot_4_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-70))
+                    dot_5_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-90))
+                    dot_6_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-110))
+
+                    dot_1_2 = self.disp.get_at((self.anim.snake[0][0]+30, self.anim.snake[0][1]+10))
+                    dot_2_2 = self.disp.get_at((self.anim.snake[0][0]+50, self.anim.snake[0][1]+10))
+                    dot_3_2 = self.disp.get_at((self.anim.snake[0][0]+70, self.anim.snake[0][1]+10))
+                    dot_4_2 = self.disp.get_at((self.anim.snake[0][0]+90, self.anim.snake[0][1]+10))
+                    dot_5_2 = self.disp.get_at((self.anim.snake[0][0]+110, self.anim.snake[0][1]+10))
+                    dot_6_2 = self.disp.get_at((self.anim.snake[0][0]+130, self.anim.snake[0][1]+10))
+
+                    dot_1_3 = self.disp.get_at((self.anim.snake[0][0]-10, self.anim.snake[0][1]+10))
+                    dot_2_3 = self.disp.get_at((self.anim.snake[0][0]-30, self.anim.snake[0][1]+10))
+                    dot_3_3 = self.disp.get_at((self.anim.snake[0][0]-50, self.anim.snake[0][1]+10))
+                    dot_4_3 = self.disp.get_at((self.anim.snake[0][0]-70, self.anim.snake[0][1]+10))
+                    dot_5_3 = self.disp.get_at((self.anim.snake[0][0]-90, self.anim.snake[0][1]+10))
+                    dot_6_3 = self.disp.get_at((self.anim.snake[0][0]-110, self.anim.snake[0][1]+10))
+                except:
+                    print("Ooops....")
 
                 pygame.display.update()
                 self.disp.fill((33, 33, 33))
 
 if __name__ == '__main__':
-    pygame.init()
     game = Game()
     game.game(True)
