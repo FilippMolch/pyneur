@@ -4,6 +4,7 @@ import main
 import snak
 import random
 import data
+import neat
 
 class Game(object):
         def __init__(self):
@@ -51,6 +52,37 @@ class Game(object):
             self.mod_index = 0
             self.debug = 0
             self.i = 0
+            self.dot_1 = 0
+            self.dot_2 = 0
+            self.dot_3 = 0
+            self.dot_4 = 0
+            self.dot_5 = 0
+            self.dot_6 = 0
+
+            self.dot_1_1 = 0
+            self.dot_2_1 = 0
+            self.dot_3_1 = 0
+            self.dot_4_1 = 0
+            self.dot_5_1 = 0
+            self.dot_6_1 = 0
+
+            self.dot_1_2 = 0
+            self.dot_2_2 = 0
+            self.dot_3_2 = 0
+            self.dot_4_2 = 0
+            self.dot_5_2 = 0
+            self.dot_6_2 = 0
+
+            self.dot_1_3 = 0
+            self.dot_2_3 = 0
+            self.dot_3_3 = 0
+            self.dot_4_3 = 0
+            self.dot_5_3 = 0
+            self.dot_6_3 = 0
+
+            self.outputs = 0
+            self.config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation, "./config-feedforward.txt")
+
 
         def game(self, flag):
             while self.flag:
@@ -204,67 +236,101 @@ class Game(object):
                 self.disp.blit(self.text_12, (1, 219+100))
                 #points
                 if self.debug:
+                    #down
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]+30, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]+50, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]+70, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]+90, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]+110, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]+130, 2, 2))
-
+                    #up
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]-10, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]-30, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]-50, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]-70, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]-90, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+10, self.anim.snake[0][1]-110, 2, 2))
-
+                    #right
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+30, self.anim.snake[0][1]+10, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+50, self.anim.snake[0][1]+10, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+70, self.anim.snake[0][1]+10, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+90, self.anim.snake[0][1]+10, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+110, self.anim.snake[0][1]+10, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]+130, self.anim.snake[0][1]+10, 2, 2))
-
+                    #left
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]-10, self.anim.snake[0][1]+10, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]-30, self.anim.snake[0][1]+10, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]-50, self.anim.snake[0][1]+10, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]-70, self.anim.snake[0][1]+10, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]-90, self.anim.snake[0][1]+10, 2, 2))
                     pygame.draw.rect(self.disp, (255, 0, 0), (self.anim.snake[0][0]-110, self.anim.snake[0][1]+10, 2, 2))
-
                 try:
-                    dot_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+33))
-                    dot_2 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+53))
-                    dot_3 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+73))
-                    dot_4 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+93))
-                    dot_5 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+113))
-                    dot_6 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+133))
-
-                    dot_1_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-10))
-                    dot_2_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-30))
-                    dot_3_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-50))
-                    dot_4_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-70))
-                    dot_5_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-90))
-                    dot_6_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-110))
-
-                    dot_1_2 = self.disp.get_at((self.anim.snake[0][0]+30, self.anim.snake[0][1]+10))
-                    dot_2_2 = self.disp.get_at((self.anim.snake[0][0]+50, self.anim.snake[0][1]+10))
-                    dot_3_2 = self.disp.get_at((self.anim.snake[0][0]+70, self.anim.snake[0][1]+10))
-                    dot_4_2 = self.disp.get_at((self.anim.snake[0][0]+90, self.anim.snake[0][1]+10))
-                    dot_5_2 = self.disp.get_at((self.anim.snake[0][0]+110, self.anim.snake[0][1]+10))
-                    dot_6_2 = self.disp.get_at((self.anim.snake[0][0]+130, self.anim.snake[0][1]+10))
-
-                    dot_1_3 = self.disp.get_at((self.anim.snake[0][0]-10, self.anim.snake[0][1]+10))
-                    dot_2_3 = self.disp.get_at((self.anim.snake[0][0]-30, self.anim.snake[0][1]+10))
-                    dot_3_3 = self.disp.get_at((self.anim.snake[0][0]-50, self.anim.snake[0][1]+10))
-                    dot_4_3 = self.disp.get_at((self.anim.snake[0][0]-70, self.anim.snake[0][1]+10))
-                    dot_5_3 = self.disp.get_at((self.anim.snake[0][0]-90, self.anim.snake[0][1]+10))
-                    dot_6_3 = self.disp.get_at((self.anim.snake[0][0]-110, self.anim.snake[0][1]+10))
+                    #down
+                    self.dot_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+33))
+                    self.dot_2 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+53))
+                    self.dot_3 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+73))
+                    self.dot_4 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+93))
+                    self.dot_5 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+113))
+                    self.dot_6 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]+133))
+                    #up
+                    self.dot_1_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-10))
+                    self.dot_2_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-30))
+                    self.dot_3_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-50))
+                    self.dot_4_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-70))
+                    self.dot_5_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-90))
+                    self.dot_6_1 = self.disp.get_at((self.anim.snake[0][0]+10, self.anim.snake[0][1]-110))
+                    #right
+                    self.dot_1_2 = self.disp.get_at((self.anim.snake[0][0]+30, self.anim.snake[0][1]+10))
+                    self.dot_2_2 = self.disp.get_at((self.anim.snake[0][0]+50, self.anim.snake[0][1]+10))
+                    self.dot_3_2 = self.disp.get_at((self.anim.snake[0][0]+70, self.anim.snake[0][1]+10))
+                    self.dot_4_2 = self.disp.get_at((self.anim.snake[0][0]+90, self.anim.snake[0][1]+10))
+                    self.dot_5_2 = self.disp.get_at((self.anim.snake[0][0]+110, self.anim.snake[0][1]+10))
+                    self.dot_6_2 = self.disp.get_at((self.anim.snake[0][0]+130, self.anim.snake[0][1]+10))
+                    #left
+                    self.dot_1_3 = self.disp.get_at((self.anim.snake[0][0]-10, self.anim.snake[0][1]+10))
+                    self.dot_2_3 = self.disp.get_at((self.anim.snake[0][0]-30, self.anim.snake[0][1]+10))
+                    self.dot_3_3 = self.disp.get_at((self.anim.snake[0][0]-50, self.anim.snake[0][1]+10))
+                    self.dot_4_3 = self.disp.get_at((self.anim.snake[0][0]-70, self.anim.snake[0][1]+10))
+                    self.dot_5_3 = self.disp.get_at((self.anim.snake[0][0]-90, self.anim.snake[0][1]+10))
+                    self.dot_6_3 = self.disp.get_at((self.anim.snake[0][0]-110, self.anim.snake[0][1]+10))
                 except:
-                    print("Ooops....")
+                    pass
+
+
+                self.outputs = data.data(
+                    self.dot_1,
+                    self.dot_2,
+                    self.dot_3,
+                    self.dot_4,
+                    self.dot_5,
+                    self.dot_6,
+
+                    self.dot_1_1,
+                    self.dot_2_1,
+                    self.dot_3_1,
+                    self.dot_4_1,
+                    self.dot_5_1,
+                    self.dot_6_1,
+
+                    self.dot_1_2,
+                    self.dot_2_2,
+                    self.dot_3_2,
+                    self.dot_4_2,
+                    self.dot_5_2,
+                    self.dot_6_2,
+
+                    self.dot_1_3,
+                    self.dot_2_3,
+                    self.dot_3_3,
+                    self.dot_4_3,
+                    self.dot_5_3,
+                    self.dot_6_3,
+                )
 
                 pygame.display.update()
                 self.disp.fill((33, 33, 33))
+                #print(self.outputs)
+
 
 if __name__ == '__main__':
     game = Game()
